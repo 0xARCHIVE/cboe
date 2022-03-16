@@ -22,6 +22,9 @@ def main() -> None:
 
     # read in stdin and process
     for line in fileinput.input():
+        if line[0].lower() == "s":
+            line = line[1:]
+
         orders.process_message(line)
 
     # combine orders so that they're accessed by symbol, not by order_id
