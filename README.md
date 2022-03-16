@@ -60,5 +60,5 @@ pytest
 For test coverage:
 
 ```shell
-pytest --cov=keypad tests/
+pytest --cov=pitch tests/
 ```
