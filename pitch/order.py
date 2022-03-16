@@ -33,9 +33,9 @@ class Orders:
         if id not in self.open:
             return
 
+        symbol: str = self.open[id].symbol
         executed_shares: int = self._reduce_shares(id, shares)
 
-        symbol: str = self.open[id].symbol
         executed_order = Order(id, symbol, executed_shares)
         self.executed.append(executed_order)
 
@@ -51,7 +51,7 @@ class Orders:
 
         order = self.open[id]
 
-        if shares > order.shares:
+        if shares >= order.shares:
             del self.open[id]
             return order.shares
         else:
@@ -60,6 +60,9 @@ class Orders:
 
     def process_message(self, line: str) -> None:
         """Process a PITCH message as appropriate."""
+        if not line or len(line) < 27:
+            raise ValueError
+
         message_type: str = line[8]
 
         id: str = line[9:21]
@@ -84,3 +87,5 @@ class Orders:
             symbol = line[28:34].strip()
 
             self.trade(id, symbol, shares)
+        else:
+            raise ValueError
